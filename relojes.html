@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Relojes — CF Import</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fg:#0d0c0b;
+    --fg-soft:rgba(13,12,11,.64);
+    --fg-faint:rgba(13,12,11,.42);
+    --shade:#f2f0ec;
+    --rule:rgba(13,12,11,.16);
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --pill-bg:#0a0908;
+    --pill-fg:#ffffff;
+  }
+
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background:var(--shade);
+    color:var(--fg);
+    font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* ---------- Chrome (static page header, no video underneath) ---------- */
+  .chrome{
+    position:sticky; top:0; z-index:40;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:max(14px, calc(env(safe-area-inset-top, 0px) + 12px)) clamp(16px, 3.4vw, 44px) 14px;
+    background:var(--shade);
+    border-bottom:1px solid var(--rule);
+  }
+  .mark{
+    display:flex; align-items:center; gap:9px; font-size:15px; letter-spacing:-.012em;
+    color:var(--fg); text-decoration:none; min-width:0; flex-shrink:1;
+  }
+  .mark-star{ opacity:.85; }
+
+  .nav{ display:flex; align-items:center; gap:clamp(14px, 2.4vw, 32px); flex-shrink:0; }
+  .nav a:not(.pill){
+    color:var(--fg); text-decoration:none; font-size:14.5px;
+    letter-spacing:-.008em; opacity:.88; transition:opacity .3s var(--ease);
+  }
+  .nav a:not(.pill):hover{ opacity:1; }
+  .nav a[aria-current="page"]{ opacity:1; text-decoration:underline; text-underline-offset:4px; }
+
+  .pill{
+    display:inline-flex; align-items:center; justify-content:center; height:40px;
+    padding:0 21px; border-radius:999px; background:var(--pill-bg); color:var(--pill-fg);
+    font-size:14.5px; font-weight:500; letter-spacing:-.008em; text-decoration:none;
+    white-space:nowrap; opacity:1; border:1px solid rgba(10,9,8,.12);
+    box-shadow:0 1px 0 rgba(255,255,255,.10) inset; -webkit-text-fill-color:var(--pill-fg);
+    transition:transform .4s var(--ease), background .3s var(--ease), color .3s var(--ease);
+  }
+  .nav .pill{ color:#fff; -webkit-text-fill-color:#fff; }
+  .pill:hover, .pill:focus-visible{
+    transform:translateY(-2px); background:#000; color:#fff; -webkit-text-fill-color:#fff;
+  }
+  .pill:focus-visible{ outline:2px solid var(--fg); outline-offset:2px; }
+
+  /* ---------- Page intro ---------- */
+  .intro{
+    max-width:1180px; margin:0 auto;
+    padding:56px clamp(20px, 5vw, 60px) 8px;
+  }
+  .breadcrumb{ font-size:12.5px; letter-spacing:.045em; color:var(--fg-faint); margin:0 0 18px; }
+  .breadcrumb a{ color:var(--fg-faint); text-decoration:none; }
+  .breadcrumb a:hover{ color:var(--fg); }
+  .intro h1{
+    font-weight:400; font-size:clamp(36px, 5.4vw, 68px); line-height:1;
+    letter-spacing:-.032em; margin:0 0 14px;
+  }
+  .intro .sub{
+    font-size:16px; line-height:1.5; letter-spacing:-.006em;
+    color:var(--fg-soft); max-width:46ch; margin:0;
+  }
+
+  /* ---------- Shop grid ---------- */
+  .shop{ max-width:1180px; margin:0 auto; padding:40px clamp(20px, 5vw, 60px) 100px; }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 360px));
+    gap:36px;
+  }
+  .product{ display:flex; flex-direction:column; }
+  .product-media{
+    aspect-ratio:1/1; border-radius:22px; overflow:hidden; background:#e9e6e0;
+  }
+  .product-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .product-info{ padding-top:20px; display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
+  .product-info h2{ font-weight:400; font-size:20px; letter-spacing:-.016em; margin:0; }
+  .product-info .price{ font-size:18px; font-weight:500; letter-spacing:-.008em; color:var(--fg); margin:2px 0 0; }
+  .product-info .pill{ margin-top:14px; }
+
+  /* ---------- Footer ---------- */
+  .foot{
+    display:flex; justify-content:center;
+    padding:24px clamp(16px, 4vw, 24px) max(24px, calc(env(safe-area-inset-bottom, 0px) + 20px));
+    font-size:12px; line-height:1.45; letter-spacing:.02em; color:var(--fg-faint);
+    text-align:center; border-top:1px solid var(--rule);
+  }
+
+  @media (max-width:720px){
+    .nav a:not(.pill){ display:none; }
+    .mark{ font-size:14px; }
+    .nav .pill{ height:38px; padding:0 16px; font-size:13.5px; }
+    .intro h1{ font-size:clamp(32px, 9.5vw, 48px); }
+    .intro .sub{ font-size:15px; }
+  }
+
+  @media (max-width:420px){
+    .mark-star{ display:none; }
+    .nav .pill{ height:36px; padding:0 14px; font-size:13px; }
+    .grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="chrome">
+  <a class="mark" href="index.html"><span class="mark-star" aria-hidden="true">&#10037;</span>&nbsp;CF Import</a>
+  <nav class="nav">
+    <a href="relojes.html" aria-current="page">Relojes</a>
+    <a href="index.html#visit">Sobre Nosotros</a>
+    <a class="pill" href="index.html#order">Start a brief</a>
+  </nav>
+</header>
+
+<main>
+  <section class="intro">
+    <p class="breadcrumb"><a href="index.html">Inicio</a> / Relojes</p>
+    <h1>Relojes</h1>
+    <p class="sub">Proveedor autorizado de relojes Invicta.</p>
+  </section>
+
+  <section class="shop">
+    <div class="grid">
+      <article class="product">
+        <div class="product-media">
+          <img src="assets/img/invicta-pro-diver-crestcore-web.jpg" alt="Invicta Pro Diver Crestcore" width="1400" height="781" loading="eager">
+        </div>
+        <div class="product-info">
+          <h2>Invicta Pro Diver Crestcore</h2>
+          <p class="price">S/. 450</p>
+          <a class="pill" href="index.html#order">Comprar</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">112 Render Lane &nbsp;&middot;&nbsp; Tue–Sun, 9am till sold out</footer>
+
+</body>
+</html>
